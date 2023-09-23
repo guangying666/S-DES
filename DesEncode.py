@@ -1,7 +1,8 @@
 import random
+import time
+import chardet
 
-
-class DesEncode:
+class DesCode:
     Ip = [2, 6, 3, 1, 4, 8, 5, 7]  # 初始置换盒
     Ip1 = [4, 1, 3, 5, 7, 2, 8, 6]  # 最终置换盒
 
@@ -74,13 +75,13 @@ class DesEncode:
         return shifted_left + shifted_right
 
     # 子密钥生成
-    def child_key(self, k, p10, p8) -> tuple:
+    def child_key(self, k) -> tuple:
         # 执行 P10 置换
-        p10_key = self.permute(k, p10)
+        p10_key = self.permute(k, self.P10)
         # 对结果进行左移操作和P8置换，得到 K1
-        k1 = self.permute(self.lelf_move(p10_key, 1), p8)
+        k1 = self.permute(self.lelf_move(p10_key, 1), self.P8)
         # 再次对上一步结果进行左移操作h和P8置换，得到 K2
-        k2 = self.permute(self.lelf_move(self.lelf_move(p10_key, 1), 2), p8)
+        k2 = self.permute(self.lelf_move(self.lelf_move(p10_key, 1), 2), self.P8)
         return k1, k2
 
     # f函数
@@ -140,22 +141,21 @@ class DesEncode:
         return self.permute(r1 + l1, self.Ip1)
 
     # 针对字符串的加密函数
-    def str_encode(self, str_list) -> tuple:
+    def str_encode(self, str_list, key) -> tuple:
         res_list = []
         p = str_list
-        key = d1.create_key()
-        ch_key = d1.child_key(key, d1.P10, d1.P8)
+        ch_key = self.child_key(key)
         for i in range(len(p)):
             c = self.encode(p[i], childk1=ch_key[0], childk2=ch_key[1])
             res_list.append(c)
         return res_list, ch_key  # 返回本次加密的密文数组以及加密所用的子密钥
 
     # 针对字符串的解密函数
-    def str_decode(self, str_list, ch_key1, ch_key2) -> list:
+    def str_decode(self, c, key) -> list:
         res_list = []
-        c = str_list
-        for i in range(len(c)):
-            p = self.decode(c[i], childk1=ch_key1, childk2=ch_key2)
+        ch_key = self.child_key(key)
+        for i in range(len(c)//8):
+            p = self.decode(c[i*8:(i+1)*8], childk1=ch_key[0], childk2=ch_key[1])
             res_list.append(p)
         return res_list
 
@@ -167,19 +167,42 @@ class DesEncode:
         ascii_string = ''.join(chr(int(temp_str[i:i + 8], 2)) for i in range(0, len(temp_str), 8))
         return ascii_string
 
+    # 暴力破解密钥
+    def brute_force(self, p_list, c_list) -> tuple:
+        start_time = time.time()  # 获取当前时间
+        for i in range(0, 1024):  # 1024是因为2^10=1024，即10位二进制数的最大值
+            binary_str = bin(i)[2:].zfill(10)  # bin函数返回的字符串形式的二进制数，去掉前缀'0b'，然后用zfill函数补足10位
+            key = self.child_key(k=binary_str)
+            c = self.encode(p_list, childk1=key[0], childk2=key[1])
+            if c == c_list:
+                end_time = time.time()
+                execution_time = end_time - start_time  # 计算两个时间点之间的差异
+                return binary_str, str(execution_time*1000)
+
+    def str_brute_force(self, p, c):
+        start_time = time.time()  # 获取当前时间
+        p_list = self.group_by_8_bit(p)
+        for i in range(0, 1024):  # 1024是因为2^10=1024，即10位二进制数的最大值
+            binary_str = bin(i)[2:].zfill(10)  # bin函数返回的字符串形式的二进制数，去掉前缀'0b'，然后用zfill函数补足10位
+            temp = self.str_encode(p_list, binary_str)
+            str_temp = ""
+            for i in range(len(temp[0])):
+                str_temp += temp[0][i]
+            if str_temp == c:
+                end_time = time.time()
+                execution_time = end_time - start_time  # 计算两个时间点之间的差异
+                return binary_str, str(execution_time * 1000)
+
+    def is_chinese(self, s):
+        result = chardet.detect(s.encode())
+        if result['encoding'] == 'utf-8' and any(ord(c) > 127 for c in s):
+            return True
+        else:
+            return False
+
 
 if __name__ == '__main__':
-    num1 = "I love you"
-    d1 = DesEncode()
-    num1 = d1.group_by_8_bit(num1)
-    print("转换为二进制的字符串数组"+str(num1))
-    num2 = d1.str_encode(num1)
-    print(num2)
-    print("加密后的字符串数组: " + str(num2[0])+"所使用的子密钥1为"+str(num2[1][0])+",子密钥2为"+str(num2[1][1]))
-    num3 = d1.str_decode(num2[0], num2[1][0], num2[1][1])
-    print("解密后的二进制字符串数组为"+str(num3))
-    print(d1.str_to_word(num3))
-
+    num1 ='111'
 
 
 
