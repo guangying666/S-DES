@@ -169,7 +169,7 @@ class DesEncode:
 
 
 if __name__ == '__main__':
-    num1 = "hLLLL"
+    num1 = "I love you"
     d1 = DesEncode()
     num1 = d1.group_by_8_bit(num1)
     print("转换为二进制的字符串数组"+str(num1))
