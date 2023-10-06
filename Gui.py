@@ -149,8 +149,8 @@ class Encrypt(object):
 
         # 实现加密操作
         def encrypt():
-            secret_text_output.delete('0.0', 'end')
-            key = self.secret_key.get()
+            secret_text_output.delete('0.0', 'end')  # 清空密文显示框
+            key = self.secret_key.get()  # 从密钥输入框获取密钥
             if len(key) != 10:
                 tk.messagebox.showerror('err', '密钥长度有误，请检查')
                 return -1
@@ -161,8 +161,8 @@ class Encrypt(object):
                 if int(key[i]) not in [0, 1]:
                     tk.messagebox.showerror('err', '密钥含有非二进制字符,请重新输入')
                     return -1
-            plain = self.plain_text.get()
-            if DesEncode.DesCode().is_chinese(plain):
+            plain = self.plain_text.get()  # 从明文输入框获取明文
+            if DesEncode.DesCode().is_chinese(plain):  # 处理二进制数据
                 tk.messagebox.showerror('err', '明文含有汉字,请重新输入')
             else:
                 if self.selected_default.get() == 1:
@@ -176,7 +176,7 @@ class Encrypt(object):
                     keys = DesEncode.DesCode().child_key(key)
                     secret_text = DesEncode.DesCode().encode(plain, keys[0], keys[1])
                     secret_text_output.insert('insert', '密文：' + secret_text)
-                if self.selected_default.get() == 2:
+                if self.selected_default.get() == 2:  # 处理ASCII字符串数据
                     plain = DesEncode.DesCode().group_by_8_bit(plain)
                     secret_text_tuple = DesEncode.DesCode().str_encode(plain, key)
                     secret_text = DesEncode.DesCode().str_to_word(secret_text_tuple[0])
@@ -274,7 +274,7 @@ class Decrypt(object):
         # 实现解密操作
         def decrypt():
             decrypt_text_output.delete('0.0', 'end')
-            key = self.secret_key.get()
+            key = self.secret_key.get()  # 从密钥输入框获取密钥
             if len(key) != 10:
                 tk.messagebox.showerror('err', '密钥长度有误，请检查')
                 return -1
@@ -285,12 +285,12 @@ class Decrypt(object):
                 if int(key[i]) not in [0, 1]:
                     tk.messagebox.showerror('err', '密钥含有非二进制字符,请重新输入')
                     return -1
-            secret_text = self.secret_text.get()
-            for i in range(len(secret_text)):
-                if secret_text[i] not in ['0', '1']:
-                    tk.messagebox.showerror('err', '密文含有非二进制字符,请重新输入')
-                    return -1
-            if self.selected_default.get() == 1:
+            secret_text = self.secret_text.get()# 从密文输入框获取密文
+            if self.selected_default.get() == 1:  # 处理二进制数据
+                for i in range(len(secret_text)):
+                    if secret_text[i] not in ['0', '1']:
+                        tk.messagebox.showerror('err', '密文含有非二进制字符,请重新输入')
+                        return -1
                 if len(secret_text) != 8:
                     tk.messagebox.showerror('err', '密文长度有误，请检查')
                     return -1
@@ -301,7 +301,9 @@ class Decrypt(object):
                 keys = DesEncode.DesCode().child_key(key)
                 plain_text = DesEncode.DesCode().decode(secret_text, keys[0], keys[1])
                 decrypt_text_output.insert('insert', '明文：' + plain_text)
-            if self.selected_default.get() == 2:
+            if self.selected_default.get() == 2:  # 处理ASCII字符串数据
+                secret_text = DesEncode.DesCode().group_by_8_bit(secret_text)
+                secret_text = DesEncode.DesCode().add_str(secret_text)
                 plain_text_tuple = DesEncode.DesCode().str_decode(secret_text, key)
                 plain_text = DesEncode.DesCode().str_to_word(plain_text_tuple)
                 decrypt_text_output.insert('insert', '明文：' + plain_text)
@@ -398,13 +400,13 @@ class CrackKey(object):
         # 实现解密操作
         def decrypt():
             decrypt_text_output.delete('0.0', 'end')
-            plain_text = self.plain_text.get()
-            secret_text = self.secret_text.get()
-            for i in range(len(secret_text)):
-                if secret_text[i] not in ['0', '1']:
-                    tk.messagebox.showerror('err', '密文含有非二进制字符,请重新输入')
-                    return -1
-            if self.selected_default.get() == 1:
+            plain_text = self.plain_text.get()# 从明文输入框获取明文
+            secret_text = self.secret_text.get()# 从密文输入框获取密文
+            if self.selected_default.get() == 1:  # 处理二进制数据
+                for i in range(len(secret_text)):
+                    if secret_text[i] not in ['0', '1']:
+                        tk.messagebox.showerror('err', '密文含有非二进制字符,请重新输入')
+                        return -1
                 for i in range(len(plain_text)):
                     if plain_text[i] not in ['0', '1']:
                         tk.messagebox.showerror('err', '明文含有非二进制字符,请重新输入')
@@ -422,7 +424,9 @@ class CrackKey(object):
                     decrypt_text_output.insert('insert',
                                                '本次破解所用密钥为：' + decrypted[0] + '\n破解所用时间为：' +
                                                decrypted[1] + 'ms')
-            if self.selected_default.get() == 2:
+            if self.selected_default.get() == 2:  # 处理ASCII字符串数据
+                secret_text = DesEncode.DesCode().group_by_8_bit(secret_text)
+                secret_text = DesEncode.DesCode().add_str(secret_text)
                 decrypted = DesEncode.DesCode().str_brute_force(plain_text, secret_text)
                 if (decrypted == None):
                     print("返回为空")

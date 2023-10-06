@@ -200,6 +200,12 @@ class DesCode:
         else:
             return False
 
+    def add_str(self, p_list):
+        res = ""
+        for i in range(len(p_list)):
+            res += p_list[i]
+        return res
+
 
 if __name__ == '__main__':
     num1 ='111'
