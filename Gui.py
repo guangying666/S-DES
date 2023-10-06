@@ -412,17 +412,24 @@ class CrackKey(object):
                 if len(plain_text) != 8:
                     tk.messagebox.showerror('err', '明文长度有误，请检查')
                     return -1
+                if len(secret_text) != 8:
+                    tk.messagebox.showerror('err', '密文长度有误，请检查')
+                    return -1
                 decrypted = DesEncode.DesCode().brute_force(plain_text, secret_text)
-                if(decrypted == None):
+                if (decrypted == None):
                     print("返回为空")
-                decrypt_text_output.insert('insert',
-                                           '本次破解所用密钥为：' + decrypted[0] + '\n破解所用时间为：' +
-                                           decrypted[1] + 'ms')
+                else:
+                    decrypt_text_output.insert('insert',
+                                               '本次破解所用密钥为：' + decrypted[0] + '\n破解所用时间为：' +
+                                               decrypted[1] + 'ms')
             if self.selected_default.get() == 2:
                 decrypted = DesEncode.DesCode().str_brute_force(plain_text, secret_text)
-                decrypt_text_output.insert('insert',
-                                           '本次破解所用密钥为：' + decrypted[0] + '\n破解所用时间为：' +
-                                           decrypted[1] + 'ms')
+                if (decrypted == None):
+                    print("返回为空")
+                else:
+                    decrypt_text_output.insert('insert',
+                                               '本次破解所用密钥为：' + decrypted[0] + '\n破解所用时间为：' +
+                                               decrypted[1] + 'ms')
 
         '''e
         '具体布局

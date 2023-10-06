@@ -66,65 +66,13 @@
 
 <img width="400" alt="image" src="./image/ASCII解密示例.png">
 
-3.6
+3.6 示例：暴力破解
 
-#### 5.S-DES的参数设置
+<img width="400" alt="image" src="./image/暴力破解示例.png">
 
-5.1 密钥长度
+#### 4.注意事项
 
-S-DES使用二进制10bit密钥
-
-5.2 密钥扩展置换
-
-
-<img width="318" alt="image" src="https://github.com/Xialanshan/S_DES/assets/110965468/fef85d39-0982-4caf-ae1b-fa4aaadd1f0a">
-
-
-
-5.3 初始置换盒
-
-<img width="300" alt="image" src="https://github.com/Xialanshan/S_DES/assets/110965468/0c86fd57-6c6d-4d85-b5a0-e1bbec2eef1c">
-
-
-5.4 最终置换盒
-
-<img width="296" alt="image" src="https://github.com/Xialanshan/S_DES/assets/110965468/5b7f688e-91d7-4023-b817-8dbfc714eb4f">
-
-
-5.5 扩展置换盒
-
-<img width="267" alt="image" src="https://github.com/Xialanshan/S_DES/assets/110965468/6e41529e-64df-4af4-a76c-2894344c0984">
-
-
-5.6替换盒
-
-SBox1:
-
-![image](https://github.com/Xialanshan/S_DES/assets/110965468/0c301247-8a5c-44ac-aaae-5d7f54b253b6)
-
-
-SBox2:
-
-![image](https://github.com/Xialanshan/S_DES/assets/110965468/5d99bc14-fa64-4a1b-a1ae-59fbd1a6412b)
-
-
-SPBox:
-
-
-![image](https://github.com/Xialanshan/S_DES/assets/110965468/9323a4f5-f7e2-4ee2-8cbe-7ccab616f9e1)
-
-
-
-#### 6.安全性和注意事项
-
-6.1 S-DES的安全性
-
-S-DES算法的密钥空间相对较小，不是高度安全的加密算法，不适用于处理高度敏感的数据。了解其局限性并采取必要的安全措施。
-
-6.2 密钥管理
-
-密钥的安全存储和分发是使用S-DES时的关键问题。确保密钥不会泄露给未授权的人员。
-
+本项目使用的S-DES算法反破译能力极弱，仅作为学习使用，不建议运用于实际生活中，尤其对于个人或工作的敏感数据。
 
 ### 测试结果
 #### 第一关：基本测试
