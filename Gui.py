@@ -179,9 +179,7 @@ class Encrypt(object):
                 if self.selected_default.get() == 2:
                     plain = DesEncode.DesCode().group_by_8_bit(plain)
                     secret_text_tuple = DesEncode.DesCode().str_encode(plain, key)
-                    secret_text = ''
-                    for i in secret_text_tuple[0]:
-                        secret_text += i
+                    secret_text = DesEncode.DesCode().str_to_word(secret_text_tuple[0])
                     secret_text_output.insert('insert', '密文：' + secret_text)
 
         '''

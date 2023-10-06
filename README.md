@@ -13,7 +13,7 @@
 
 1.2 用户指南概览
 
-本用户指南将帮助您了解如何本项目的实现原理和使用流程。
+本用户指南将帮助您了解如何本项目的数学原理和使用流程。
 
 
 
@@ -44,41 +44,29 @@
 
 首先，您需要一个密钥，可通过以下方式获取：
 
--   获取一个有效的S-DES密钥（10bit）。
+-   自行准备一个有效的S-DES密钥（10bit）。
 
--   准备要加密的明文数据。
+-   通过获取密钥功能获取一个随机密钥
 
-3.2 示例：如何使用S-DES加密二进制数据
+<img width="400" alt="image" src="./image/获取密钥示例.png">
 
-<img width="411" alt="image" src="https://github.com/Xialanshan/S_DES/assets/110965468/a4cc39fd-1407-4cff-95d9-4870a52ddc17">
+3.2 示例：加密二进制数据
 
+<img width="400" alt="image" src="./image/二进制加密示例.png">
 
-3.3 示例：如何使用S-DES加密ASCII字符串
+3.3 示例：加密ASCII字符串数据
 
-<img width="398" alt="image" src="https://github.com/Xialanshan/S_DES/assets/110965468/f475b733-2691-4357-ba3e-fca82d6895dc">
+<img width="400" alt="image" src="./image/ASCII加密示例.png">
 
+3.4 示例：解密二进制数据
 
-#### 4.使用S-DES解密数据
+<img width="400" alt="image" src="./image/二进制解密示例.png">
 
-4.1 准备工作
+3.5 示例：解密ASCII字符串数据
 
-在使用S-DES解密数据之前，您需要：
+<img width="400" alt="image" src="./image/ASCII解密示例.png">
 
--   获取一个有效的S-DES密钥(10bit)。
-
--   准备要解密的密文数据。
-
-4.2 示例：如何使用S-DES解密数据
-
-<img width="362" alt="image" src="https://github.com/Xialanshan/S_DES/assets/110965468/6e292772-db74-414e-92f9-673e514c290e">
-
-
-4.3 示例：如何使用S-DES解密ASCII字符串
-
-
-<img width="356" alt="image" src="https://github.com/Xialanshan/S_DES/assets/110965468/4c975dfe-15d5-462a-ae4f-ea331c92eb1e">
-
-
+3.6
 
 #### 5.S-DES的参数设置
 
@@ -137,23 +125,7 @@ S-DES算法的密钥空间相对较小，不是高度安全的加密算法，不
 
 密钥的安全存储和分发是使用S-DES时的关键问题。确保密钥不会泄露给未授权的人员。
 
-#### 7.常见问题解答
 
-Q: S-DES与标准DES的区别
-
-A: S-DES是标准DES的简化版本，主要区别在于密钥长度和轮数。标准DES使用56位密钥和16轮Feistel网络运算，更安全但也更复杂。
-
-Q: 为什么我无法解密我的数据
-
-A: 请检查您输入的密钥是否正确，确保与加密时使用的密钥相同。
-
-Q: 我忘记了密钥，如何解密数据？
-
-A: 如果您忘记了密钥，无法解密数据，因为S-DES是对称加密算法，密钥是解密的关键。
-
-Q: 是否有S-DES的编程库或工具？
-
-A: S-DES的编程库和工具可能存在，但不如更现代的加密标准普遍。您可以搜索相关资源或开发自己的S-DES实现。
 ### 测试结果
 #### 第一关：基本测试
 #### 第二关：交叉测试
